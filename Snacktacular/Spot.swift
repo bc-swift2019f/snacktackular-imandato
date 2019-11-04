@@ -66,12 +66,12 @@ class Spot: NSObject, MKAnnotation {
         self.init(name: name, address: address, coordinate: coordinate, averageRating: averageRating, numberOfReviews: numberOfReviews, postingUserID: postingUserID, documentID: "")
     }
     
-    func saveData(completion: @escaping (Bool) -> ()) {
+    func saveData(completed: @escaping (Bool) -> ()) {
         let db = Firestore.firestore()
         // Grab the userID
         guard let postingUserID = (Auth.auth().currentUser?.uid) else {
             print("*** ERROR: Could not save data becuase we don't have a valid postingUserID")
-            return completion (false)
+            return completed (false)
         }
         self.postingUserID = postingUserID
         // Create the dictionary representing the data we want to save
@@ -82,10 +82,10 @@ class Spot: NSObject, MKAnnotation {
             ref.setData(dataToSave) { (error) in
                 if let error = error {
                     print("*** ERROR: updating document \(self.documentID) \(error.localizedDescription)")
-                    completion(false)
+                    completed(false)
                 } else {
                     print("^^^ Document updated with ref ID \(ref.documentID)")
-                    completion (true)
+                    completed (true)
                 }
             }
         } else {
@@ -93,10 +93,10 @@ class Spot: NSObject, MKAnnotation {
             ref = db.collection("spots").addDocument(data: dataToSave) { error in
                 if let error = error {
                     print("*** ERROR: creating new document \(self.documentID) \(error.localizedDescription)")
-                    completion(false)
+                    completed(false)
                 } else {
-                    print("^^^ new document created with ref ID \(ref?.documentID ?? "unknown")")
-                    completion (true)
+                    print("^^^ new document created with ref ID \(ref?.documentID ?? "Unknown")")
+                    completed (true)
                 }
             }
         }
