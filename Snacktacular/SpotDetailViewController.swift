@@ -83,8 +83,8 @@ class SpotDetailViewController: UIViewController {
             let navigationController = segue.destination as! UINavigationController
             let destination = navigationController.viewControllers.first as! ReviewTableViewController
             destination.spot = spot
-            if let selectedIndexPath = tableView.indexPathforSelectedRow {
-                tableView.deselectedRow(at: selectedIndexPath, animated: true)
+            if let selectedIndexPath = tableView.indexPathForSelectedRow {
+                tableView.deselectRow(at: selectedIndexPath, animated: true)
             }
         case "ShowReview" :
             let destination = segue.destination as! ReviewTableViewController
@@ -93,6 +93,7 @@ class SpotDetailViewController: UIViewController {
             destination.review = reviews.reviewArray[selectedIndexPath.row]
         default:
             print ("*** ERROR: Did not have a segue in SpotDetailViewController prepare(for segue:)")
+        }
     }
         
         
@@ -176,10 +177,13 @@ class SpotDetailViewController: UIViewController {
         present(autocompleteController, animated: true, completion: nil)
     }
     
+        
     @IBAction func cancelButtonPressed(_ sender: UIBarButtonItem) {
         leaveViewController()
     }
+        
 }
+
 
 extension SpotDetailViewController: GMSAutocompleteViewControllerDelegate {
     
@@ -286,7 +290,7 @@ extension SpotDetailViewController: CLLocationManagerDelegate{
         print("Failed to get user location.")
     }
 }
-}
+
 
 extension SpotDetailViewController: UITableViewDelegate, UITableViewDataSource{
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
